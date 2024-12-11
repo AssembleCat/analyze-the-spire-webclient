@@ -1,35 +1,24 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+import type {Metadata} from "next";
 import "./globals.css";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import Navigation from "@/components/navigation";
 
 export const metadata: Metadata = {
-  title: "Analyze the Spire",
-  description: "Slay the Spire with a deep learning model",
+    title: {
+        template: "%s | Analyze the Spire",
+        default: "Analyze the Spire"
+    },
+    description: "Slay the Spire with a deep learning model",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
+export default function RootLayout({children}: Readonly<{
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    return (
+        <html lang="en">
+        <body>
+        <Navigation></Navigation>
         {children}
-      </body>
-    </html>
-  );
+        </body>
+        </html>
+    );
 }
