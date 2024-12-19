@@ -1,6 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
-import Navigation from "@/components/navigation";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
     title: {
@@ -16,7 +16,7 @@ export default function RootLayout({children}: Readonly<{
     return (
         <html lang="en">
         <body>
-        <Navigation></Navigation>
+        <Header />
         {children}
         </body>
         </html>
