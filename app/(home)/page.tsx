@@ -13,8 +13,8 @@ type DeckCard = {
 };
 
 export default function Home() {
-  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(
-    null
+  const [selectedCharacter, setSelectedCharacter] = useState<string>(
+    characters[0]
   );
   const [deck, setDeck] = useState<DeckCard[]>([]);
 
@@ -115,8 +115,8 @@ export default function Home() {
                 <button
                   className={`px-4 py-2 rounded ${
                     selectedCharacter === character
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200"
+                      ? "bg-gray-200 text-black"
+                      : `bg-${character.toLowerCase()} text-white`
                   }`}
                   onClick={() => setSelectedCharacter(character)}
                 >
