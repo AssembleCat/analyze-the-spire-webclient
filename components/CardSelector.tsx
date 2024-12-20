@@ -68,7 +68,7 @@ export default function CardSelector({
             }
             className="p-2 border rounded"
           >
-            <option value="all">All Types</option>
+            <option value="All">All Types</option>
             <option value="Attack">Attack</option>
             <option value="Skill">Skill</option>
             <option value="Power">Power</option>
@@ -99,7 +99,7 @@ export default function CardSelector({
       </div>
 
       {/* 카드 목록 */}
-      <ul className="grid grid-cols-2 gap-2">
+      <ul className="grid grid-cols-2 gap-2 max-h-[calc(100vh-220px)] overflow-y-auto scrollbar-custom p-2">
         {sortedCards.map((card) => (
           <li key={card.name}>
             <button
