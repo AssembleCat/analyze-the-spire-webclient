@@ -1,8 +1,8 @@
 type CardType = "Attack" | "Skill" | "Power";
 
-type Rarity = "COMMON" | "UNCOMMON" | "RARE" | "SPECIAL";
+type Rarity = "Common" | "Uncommon" | "Rare" | "Special";
 
-type SpecialCardCategory = "STATUS" | "CURSE";
+type SpecialCardCategory = "Status" | "Curse";
 
 interface Card {
   name: string;
@@ -12,77 +12,77 @@ interface Card {
 }
 
 const BASE_STATUS_CARD: Card[] = [
-  { name: "Burn", type: "Skill", rarity: "COMMON", specialCategory: "STATUS" },
-  { name: "Dazed", type: "Skill", rarity: "COMMON", specialCategory: "STATUS" },
+  { name: "Burn", type: "Skill", rarity: "Common", specialCategory: "Status" },
+  { name: "Dazed", type: "Skill", rarity: "Common", specialCategory: "Status" },
   {
     name: "Slimed",
     type: "Skill",
-    rarity: "COMMON",
-    specialCategory: "STATUS",
+    rarity: "Common",
+    specialCategory: "Status",
   },
-  { name: "Void", type: "Skill", rarity: "COMMON", specialCategory: "STATUS" },
-  { name: "Wound", type: "Skill", rarity: "COMMON", specialCategory: "STATUS" },
+  { name: "Void", type: "Skill", rarity: "Common", specialCategory: "Status" },
+  { name: "Wound", type: "Skill", rarity: "Common", specialCategory: "Status" },
 ];
 
 const BASE_CURSE_CARD: Card[] = [
   {
     name: "AscendersBane",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
   {
     name: "Clumsy",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
   {
     name: "CurseOfTheBell",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
-  { name: "Decay", type: "Skill", rarity: "SPECIAL", specialCategory: "CURSE" },
-  { name: "Doubt", type: "Skill", rarity: "SPECIAL", specialCategory: "CURSE" },
+  { name: "Decay", type: "Skill", rarity: "Special", specialCategory: "Curse" },
+  { name: "Doubt", type: "Skill", rarity: "Special", specialCategory: "Curse" },
   {
     name: "Injury",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
   {
     name: "Necronomicurse",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
   {
     name: "Normality",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
-  { name: "Pain", type: "Skill", rarity: "SPECIAL", specialCategory: "CURSE" },
+  { name: "Pain", type: "Skill", rarity: "Special", specialCategory: "Curse" },
   {
     name: "Parasite",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
-  { name: "Pride", type: "Skill", rarity: "SPECIAL", specialCategory: "CURSE" },
+  { name: "Pride", type: "Skill", rarity: "Special", specialCategory: "Curse" },
   {
     name: "Regret",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
-  { name: "Shame", type: "Skill", rarity: "SPECIAL", specialCategory: "CURSE" },
+  { name: "Shame", type: "Skill", rarity: "Special", specialCategory: "Curse" },
   {
     name: "Writhe",
     type: "Skill",
-    rarity: "SPECIAL",
-    specialCategory: "CURSE",
+    rarity: "Special",
+    specialCategory: "Curse",
   },
 ];
 
@@ -574,32 +574,32 @@ const DECK: Deck = {
   IRONCLAD: {
     attack: [
       ...IRONCLAD_ATTACK_COMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Common" } as Card)
       ),
       ...IRONCLAD_ATTACK_UNCOMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Uncommon" } as Card)
       ),
       ...IRONCLAD_ATTACK_RARE.map(
-        (name) => ({ name, type: "Attack", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Rare" } as Card)
       ),
     ],
     skill: [
       ...IRONCLAD_SKILL_COMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Common" } as Card)
       ),
       ...IRONCLAD_SKILL_UNCOMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Uncommon" } as Card)
       ),
       ...IRONCLAD_SKILL_RARE.map(
-        (name) => ({ name, type: "Skill", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Rare" } as Card)
       ),
     ],
     power: [
       ...IRONCLAD_POWER_UNCOMMON.map(
-        (name) => ({ name, type: "Power", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Uncommon" } as Card)
       ),
       ...IRONCLAD_POWER_RARE.map(
-        (name) => ({ name, type: "Power", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Rare" } as Card)
       ),
     ],
   },
@@ -607,32 +607,32 @@ const DECK: Deck = {
   SILENT: {
     attack: [
       ...SILENT_ATTACK_COMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Common" } as Card)
       ),
       ...SILENT_ATTACK_UNCOMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Uncommon" } as Card)
       ),
       ...SILENT_ATTACK_RARE.map(
-        (name) => ({ name, type: "Attack", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Rare" } as Card)
       ),
     ],
     skill: [
       ...SILENT_SKILL_COMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Common" } as Card)
       ),
       ...SILENT_SKILL_UNCOMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Uncommon" } as Card)
       ),
       ...SILENT_SKILL_RARE.map(
-        (name) => ({ name, type: "Skill", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Rare" } as Card)
       ),
     ],
     power: [
       ...SILENT_POWER_UNCOMMON.map(
-        (name) => ({ name, type: "Power", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Uncommon" } as Card)
       ),
       ...SILENT_POWER_RARE.map(
-        (name) => ({ name, type: "Power", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Rare" } as Card)
       ),
     ],
   },
@@ -640,32 +640,32 @@ const DECK: Deck = {
   DEFECT: {
     attack: [
       ...DEFECT_ATTACK_COMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Common" } as Card)
       ),
       ...DEFECT_ATTACK_UNCOMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Uncommon" } as Card)
       ),
       ...DEFECT_ATTACK_RARE.map(
-        (name) => ({ name, type: "Attack", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Rare" } as Card)
       ),
     ],
     skill: [
       ...DEFECT_SKILL_COMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Common" } as Card)
       ),
       ...DEFECT_SKILL_UNCOMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Uncommon" } as Card)
       ),
       ...DEFECT_SKILL_RARE.map(
-        (name) => ({ name, type: "Skill", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Rare" } as Card)
       ),
     ],
     power: [
       ...DEFECT_POWER_UNCOMMON.map(
-        (name) => ({ name, type: "Power", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Uncommon" } as Card)
       ),
       ...DEFECT_POWER_RARE.map(
-        (name) => ({ name, type: "Power", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Rare" } as Card)
       ),
     ],
   },
@@ -673,32 +673,32 @@ const DECK: Deck = {
   WATCHER: {
     attack: [
       ...WATCHER_ATTACK_COMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Common" } as Card)
       ),
       ...WATCHER_ATTACK_UNCOMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Uncommon" } as Card)
       ),
       ...WATCHER_ATTACK_RARE.map(
-        (name) => ({ name, type: "Attack", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Rare" } as Card)
       ),
     ],
     skill: [
       ...WATCHER_SKILL_COMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "COMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Common" } as Card)
       ),
       ...WATCHER_SKILL_UNCOMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Uncommon" } as Card)
       ),
       ...WATCHER_SKILL_RARE.map(
-        (name) => ({ name, type: "Skill", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Rare" } as Card)
       ),
     ],
     power: [
       ...WATCHER_POWER_UNCOMMON.map(
-        (name) => ({ name, type: "Power", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Uncommon" } as Card)
       ),
       ...WATCHER_POWER_RARE.map(
-        (name) => ({ name, type: "Power", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Rare" } as Card)
       ),
     ],
   },
@@ -706,32 +706,32 @@ const DECK: Deck = {
   COLORLESS: {
     attack: [
       ...COLORLESS_ATTACK_UNCOMMON.map(
-        (name) => ({ name, type: "Attack", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Uncommon" } as Card)
       ),
       ...COLORLESS_ATTACK_RARE.map(
-        (name) => ({ name, type: "Attack", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Rare" } as Card)
       ),
       ...COLORLESS_ATTACK_SPECIAL.map(
-        (name) => ({ name, type: "Attack", rarity: "SPECIAL" } as Card)
+        (name) => ({ name, type: "Attack", rarity: "Special" } as Card)
       ),
     ],
     skill: [
       ...COLORLESS_SKILL_UNCOMMON.map(
-        (name) => ({ name, type: "Skill", rarity: "UNCOMMON" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Uncommon" } as Card)
       ),
       ...COLORLESS_SKILL_RARE.map(
-        (name) => ({ name, type: "Skill", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Rare" } as Card)
       ),
       ...COLORLESS_SKILL_SPECIAL.map(
-        (name) => ({ name, type: "Skill", rarity: "SPECIAL" } as Card)
+        (name) => ({ name, type: "Skill", rarity: "Special" } as Card)
       ),
     ],
     power: [
       ...COLORLESS_POWER_RARE.map(
-        (name) => ({ name, type: "Power", rarity: "RARE" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Rare" } as Card)
       ),
       ...COLORLESS_POWER_SPECIAL.map(
-        (name) => ({ name, type: "Power", rarity: "SPECIAL" } as Card)
+        (name) => ({ name, type: "Power", rarity: "Special" } as Card)
       ),
     ],
   },

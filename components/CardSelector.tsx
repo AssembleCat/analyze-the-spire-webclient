@@ -27,7 +27,7 @@ export default function CardSelector({
 
   // 카드 필터링 기준 설정
   const [selectedRarity, setSelectedRarity] = useState<
-    "COMMON" | "UNCOMMON" | "RARE" | "SPECIAL" | "All"
+    "Common" | "Uncommon" | "Rare" | "Special" | "All"
   >("All");
   const [selectedType, setSelectedType] = useState<
     "Attack" | "Skill" | "Power" | "All"
@@ -80,20 +80,20 @@ export default function CardSelector({
             onChange={(e) =>
               setSelectedRarity(
                 e.target.value as
-                  | "COMMON"
-                  | "UNCOMMON"
-                  | "RARE"
-                  | "SPECIAL"
+                  | "Common"
+                  | "Uncommon"
+                  | "Rare"
+                  | "Special"
                   | "All"
               )
             }
             className="p-2 border rounded"
           >
             <option value="All">All Rarities</option>
-            <option value="COMMON">Common</option>
-            <option value="UNCOMMON">Uncommon</option>
-            <option value="RARE">Rare</option>
-            <option value="SPECIAL">Special</option>
+            <option value="Common">Common</option>
+            <option value="Uncommon">Uncommon</option>
+            <option value="Rare">Rare</option>
+            <option value="Special">Special</option>
           </select>
         </div>
       </div>
