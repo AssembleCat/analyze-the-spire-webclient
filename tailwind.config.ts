@@ -24,6 +24,8 @@ export default {
         defect: "#33A8FF",
         watcher: "#9B59B6",
         colorless: "#828282",
+
+        primary: "#3F3F46",
       },
     },
   },
