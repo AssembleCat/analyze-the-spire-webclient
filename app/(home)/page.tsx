@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import CardSelector from "@/components/CardSelector";
 import DeckViewer from "@/components/DeckViewer";
@@ -20,12 +21,14 @@ export default function Home() {
   const [prediction, setPrediction] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // 카드 추가 함수 (미강화 카드일 때)
   const handleCardAdd = (cardName: string) => {
     const existingCard = deck.find(
       (card) => card.name === cardName && !card.isUpgraded
     );
 
     if (existingCard) {
+      // 미강화 카드가 이미 있을 때: 미강화 카드 수 증가
       setDeck(
         deck.map((card) =>
           card.name === cardName && !card.isUpgraded
@@ -34,6 +37,7 @@ export default function Home() {
         )
       );
     } else {
+      // 미강화 카드가 없으면 새로운 미강화 카드 추가
       setDeck([
         ...deck,
         {
@@ -46,65 +50,78 @@ export default function Home() {
     }
   };
 
+  // 카드 클릭 시 동작 (강화 카드 또는 미강화 카드 변경)
   const handleCardClick = (cardName: string, isUpgraded: boolean) => {
-    const existingCard = deck.find(
-      (card) => card.name === cardName && card.isUpgraded === isUpgraded
-    );
+    if (!isUpgraded) {
+      // 미강화 카드를 클릭했을 때
+      const existingCard = deck.find(
+        (card) => card.name === cardName && !card.isUpgraded
+      );
 
-    if (existingCard) {
-      if (!isUpgraded) {
-        if (existingCard.count > 1) {
-          setDeck([
-            ...deck.map((card) =>
+      if (existingCard && existingCard.count > 1) {
+        // 미강화 카드가 여러 개 있을 때는 하나 감소하고 강화 카드 추가
+        setDeck(
+          deck
+            .map((card) =>
               card.name === cardName && !card.isUpgraded
                 ? { ...card, count: card.count - 1 }
                 : card
-            ),
-            {
+            )
+            .concat({
               id: `${cardName}-upgraded-${Date.now()}`,
               name: cardName,
               count: 1,
               isUpgraded: true,
-            },
-          ]);
-        } else {
-          setDeck([
-            ...deck.filter(
-              (card) =>
-                !(card.name === cardName && card.isUpgraded === isUpgraded)
-            ),
-            {
-              id: `${cardName}-upgraded-${Date.now()}`,
-              name: cardName,
-              count: 1,
-              isUpgraded: true,
-            },
-          ]);
-        }
+            })
+        );
       } else {
-        if (existingCard.count > 1) {
-          setDeck(
-            deck.map((card) =>
+        // 미강화 카드가 하나일 때는 미강화 카드를 제거하고 강화 카드 추가
+        setDeck([
+          ...deck.filter(
+            (card) => !(card.name === cardName && !card.isUpgraded)
+          ),
+          {
+            id: `${cardName}-upgraded-${Date.now()}`,
+            name: cardName,
+            count: 1,
+            isUpgraded: true,
+          },
+        ]);
+      }
+    } else {
+      // 강화 카드를 클릭했을 때
+      const existingCard = deck.find(
+        (card) => card.name === cardName && card.isUpgraded
+      );
+
+      if (existingCard && existingCard.count > 1) {
+        // 강화 카드가 여러 개 있을 때는 하나 감소하고 미강화 카드 추가
+        setDeck(
+          deck
+            .map((card) =>
               card.name === cardName && card.isUpgraded
                 ? { ...card, count: card.count - 1 }
                 : card
             )
-          );
-        } else {
-          setDeck(
-            deck.filter(
-              (card) =>
-                !(card.name === cardName && card.isUpgraded === isUpgraded)
-            )
-          );
-        }
+            .concat({
+              id: `${cardName}-${Date.now()}`,
+              name: cardName,
+              count: 1,
+              isUpgraded: false,
+            })
+        );
+      } else {
+        // 강화 카드가 하나일 때는 강화 카드를 제거
+        setDeck(
+          deck.filter((card) => !(card.name === cardName && card.isUpgraded))
+        );
       }
     }
   };
 
   const handlePredict = async () => {
-    setError(null); // 이전 오류 초기화
-    setPrediction(null); // 이전 예측 초기화
+    setError(null);
+    setPrediction(null);
 
     const transformedDeck = deck.flatMap((card) =>
       Array(card.count).fill(card.name + (card.isUpgraded ? "+1" : ""))
@@ -113,74 +130,106 @@ export default function Home() {
     try {
       const response = await fetch("/api/predict", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ deck: transformedDeck }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch prediction.");
-      }
+      if (!response.ok) throw new Error("Failed to fetch prediction.");
 
       const data = await response.json();
       if (typeof data.prediction === "number") {
-        setPrediction((data.prediction * 100).toFixed(2)); // 소수점 둘째 자리까지
+        setPrediction((data.prediction * 100).toFixed(2));
       } else {
         throw new Error("Invalid response format.");
       }
-    } catch (ignore) {
-      setError("Try again later"); // 오류 메시지 설정
+    } catch {
+      setError("Try again later");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <main className="flex">
-        <section className="w-1/2 p-6">
-          <h2 className="text-lg font-bold mb-4">Select Character</h2>
-          <ul className="flex space-x-4 mb-6">
-            {characters.map((character) => (
-              <li key={character}>
-                <button
-                  className={`px-4 py-2 rounded ${
-                    selectedCharacter === character
-                      ? "bg-gray-300 text-black"
-                      : `bg-${character.toLowerCase()} text-white`
-                  }`}
-                  onClick={() => setSelectedCharacter(character)}
-                >
-                  {character}
-                </button>
-              </li>
-            ))}
-          </ul>
-          {selectedCharacter && (
-            <CardSelector
-              character={selectedCharacter}
-              onCardSelect={handleCardAdd}
-            />
-          )}
-        </section>
-        <section className="w-1/2 p-6">
-          <h2 className="text-lg font-bold mb-6 flex items-center justify-between">
-            Your Deck
-            <button
-              onClick={handlePredict}
-              className="ml-4 px-4 py-2 bg-primary text-white rounded hover:bg-blue-700"
-            >
-              Predict
-            </button>
-            {error && <p className="text-red-500">{error}</p>}
-            {prediction && (
-              <p className="text-green-600 text-xl font-bold">
-                Prediction: {prediction}%
-              </p>
-            )}
-          </h2>
-          <DeckViewer deck={deck} onCardClick={handleCardClick} />
-        </section>
+        <CharacterSelector
+          characters={characters}
+          selectedCharacter={selectedCharacter}
+          onSelect={setSelectedCharacter}
+          onCardAdd={handleCardAdd}
+        />
+        <DeckSection
+          deck={deck}
+          prediction={prediction}
+          error={error}
+          onCardClick={handleCardClick}
+          onPredict={handlePredict}
+        />
       </main>
     </div>
   );
 }
+
+const CharacterSelector = ({
+  characters,
+  selectedCharacter,
+  onSelect,
+  onCardAdd,
+}: {
+  characters: string[];
+  selectedCharacter: string;
+  onSelect: (character: string) => void;
+  onCardAdd: (cardName: string) => void;
+}) => (
+  <section className="w-1/2 p-6">
+    <h2 className="text-lg font-bold mb-4">Select Character</h2>
+    <ul className="flex space-x-4 mb-6">
+      {characters.map((character) => (
+        <li key={character}>
+          <button
+            className={`px-4 py-2 rounded ${
+              selectedCharacter === character
+                ? "bg-gray-300 text-black"
+                : `bg-${character.toLowerCase()} text-white`
+            }`}
+            onClick={() => onSelect(character)}
+          >
+            {character}
+          </button>
+        </li>
+      ))}
+    </ul>
+    <CardSelector character={selectedCharacter} onCardSelect={onCardAdd} />
+  </section>
+);
+
+const DeckSection = ({
+  deck,
+  prediction,
+  error,
+  onCardClick,
+  onPredict,
+}: {
+  deck: DeckCard[];
+  prediction: string | null;
+  error: string | null;
+  onCardClick: (cardName: string, isUpgraded: boolean) => void;
+  onPredict: () => void;
+}) => (
+  <section className="w-1/2 p-6">
+    <h2 className="text-lg font-bold mb-6 flex items-center justify-between">
+      Your Deck
+      <button
+        onClick={onPredict}
+        className="ml-4 px-4 py-2 bg-primary text-white rounded hover:bg-blue-700"
+      >
+        Predict
+      </button>
+      {error && <p className="text-red-500">{error}</p>}
+      {prediction && (
+        <p className="text-green-600 text-xl font-bold">
+          Prediction: {prediction}%
+        </p>
+      )}
+    </h2>
+    <DeckViewer deck={deck} onCardClick={onCardClick} />
+  </section>
+);
