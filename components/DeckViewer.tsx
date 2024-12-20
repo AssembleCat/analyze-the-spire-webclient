@@ -20,13 +20,12 @@ export default function DeckViewer({
       <ul className="grid grid-cols-2 gap-2">
         {deck.map((card) => (
           <li key={card.id}>
-            {" "}
-            {/* 고유한 ID를 key로 사용 */}
             <button
               className="w-full px-4 py-2 bg-gray-200 hover:bg-blue-600 hover:text-white rounded"
               onClick={() => onCardClick(card.name, card.isUpgraded)}
             >
-              {card.name} {card.isUpgraded ? "(Upgraded)" : ""} x {card.count}
+              {card.name} {card.isUpgraded ? "(Upgraded)" : ""}{" "}
+              {card.count > 1 ? `x ${card.count}` : ""}
             </button>
           </li>
         ))}
