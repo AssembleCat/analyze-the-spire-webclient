@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import CardSelector from "@/components/CardSelector";
 import DeckViewer from "@/components/DeckViewer";
@@ -7,8 +6,10 @@ import DeckViewer from "@/components/DeckViewer";
 const characters = ["IRONCLAD", "SILENT", "DEFECT", "WATCHER", "COLORLESS"];
 
 type DeckCard = {
+  id: string;
   name: string;
   count: number;
+  isUpgraded: boolean;
 };
 
 export default function Home() {
@@ -18,35 +19,87 @@ export default function Home() {
   const [deck, setDeck] = useState<DeckCard[]>([]);
 
   const handleCardAdd = (cardName: string) => {
-    const existingCard = deck.find((card) => card.name === cardName);
+    const existingCard = deck.find(
+      (card) => card.name === cardName && !card.isUpgraded
+    );
 
     if (existingCard) {
-      // 카드가 이미 덱에 있으면 개수 증가
+      // 같은 이름의 비강화 카드가 있으면 count 증가
       setDeck(
         deck.map((card) =>
-          card.name === cardName ? { ...card, count: card.count + 1 } : card
+          card.name === cardName && !card.isUpgraded
+            ? { ...card, count: card.count + 1 }
+            : card
         )
       );
     } else {
-      // 새로운 카드는 추가
-      setDeck([...deck, { name: cardName, count: 1 }]);
+      // 새로운 비강화 카드 추가
+      setDeck([
+        ...deck,
+        {
+          id: `${cardName}-${Date.now()}`, // 고유 ID 부여
+          name: cardName,
+          count: 1,
+          isUpgraded: false,
+        },
+      ]);
     }
   };
 
-  const handleCardClick = (cardName: string) => {
-    const existingCard = deck.find((card) => card.name === cardName);
+  const handleCardClick = (cardName: string, isUpgraded: boolean) => {
+    const existingCard = deck.find(
+      (card) => card.name === cardName && card.isUpgraded === isUpgraded
+    );
 
     if (existingCard) {
-      if (existingCard.count > 1) {
-        // 개수가 2개 이상인 경우 개수 감소
-        setDeck(
-          deck.map((card) =>
-            card.name === cardName ? { ...card, count: card.count - 1 } : card
-          )
-        );
+      if (!isUpgraded) {
+        // 비강화 카드 클릭 -> 강화 카드로 분리
+        if (existingCard.count > 1) {
+          setDeck([
+            ...deck.map((card) =>
+              card.name === cardName && !card.isUpgraded
+                ? { ...card, count: card.count - 1 }
+                : card
+            ),
+            {
+              id: `${cardName}-upgraded-${Date.now()}`,
+              name: cardName,
+              count: 1,
+              isUpgraded: true,
+            },
+          ]);
+        } else {
+          setDeck([
+            ...deck.filter(
+              (card) =>
+                !(card.name === cardName && card.isUpgraded === isUpgraded)
+            ),
+            {
+              id: `${cardName}-upgraded-${Date.now()}`,
+              name: cardName,
+              count: 1,
+              isUpgraded: true,
+            },
+          ]);
+        }
       } else {
-        // 마지막 카드일 경우 제거
-        setDeck(deck.filter((card) => card.name !== cardName));
+        // 강화된 카드 클릭 -> 개수 감소 또는 제거
+        if (existingCard.count > 1) {
+          setDeck(
+            deck.map((card) =>
+              card.name === cardName && card.isUpgraded
+                ? { ...card, count: card.count - 1 }
+                : card
+            )
+          );
+        } else {
+          setDeck(
+            deck.filter(
+              (card) =>
+                !(card.name === cardName && card.isUpgraded === isUpgraded)
+            )
+          );
+        }
       }
     }
   };
