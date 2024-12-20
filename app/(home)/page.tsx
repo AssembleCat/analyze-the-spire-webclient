@@ -17,6 +17,8 @@ export default function Home() {
     characters[0]
   );
   const [deck, setDeck] = useState<DeckCard[]>([]);
+  const [prediction, setPrediction] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCardAdd = (cardName: string) => {
     const existingCard = deck.find(
@@ -24,7 +26,6 @@ export default function Home() {
     );
 
     if (existingCard) {
-      // 같은 이름의 비강화 카드가 있으면 count 증가
       setDeck(
         deck.map((card) =>
           card.name === cardName && !card.isUpgraded
@@ -33,11 +34,10 @@ export default function Home() {
         )
       );
     } else {
-      // 새로운 비강화 카드 추가
       setDeck([
         ...deck,
         {
-          id: `${cardName}-${Date.now()}`, // 고유 ID 부여
+          id: `${cardName}-${Date.now()}`,
           name: cardName,
           count: 1,
           isUpgraded: false,
@@ -53,7 +53,6 @@ export default function Home() {
 
     if (existingCard) {
       if (!isUpgraded) {
-        // 비강화 카드 클릭 -> 강화 카드로 분리
         if (existingCard.count > 1) {
           setDeck([
             ...deck.map((card) =>
@@ -83,7 +82,6 @@ export default function Home() {
           ]);
         }
       } else {
-        // 강화된 카드 클릭 -> 개수 감소 또는 제거
         if (existingCard.count > 1) {
           setDeck(
             deck.map((card) =>
@@ -104,6 +102,38 @@ export default function Home() {
     }
   };
 
+  const handlePredict = async () => {
+    setError(null); // 이전 오류 초기화
+    setPrediction(null); // 이전 예측 초기화
+
+    const transformedDeck = deck.flatMap((card) =>
+      Array(card.count).fill(card.name + (card.isUpgraded ? "+1" : ""))
+    );
+
+    try {
+      const response = await fetch("/api/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ deck: transformedDeck }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch prediction.");
+      }
+
+      const data = await response.json();
+      if (typeof data.prediction === "number") {
+        setPrediction((data.prediction * 100).toFixed(2)); // 소수점 둘째 자리까지
+      } else {
+        throw new Error("Invalid response format.");
+      }
+    } catch (ignore) {
+      setError("Try again later"); // 오류 메시지 설정
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <main className="flex">
@@ -115,7 +145,7 @@ export default function Home() {
                 <button
                   className={`px-4 py-2 rounded ${
                     selectedCharacter === character
-                      ? "bg-gray-200 text-black"
+                      ? "bg-gray-300 text-black"
                       : `bg-${character.toLowerCase()} text-white`
                   }`}
                   onClick={() => setSelectedCharacter(character)}
@@ -133,7 +163,21 @@ export default function Home() {
           )}
         </section>
         <section className="w-1/2 p-6">
-          <h2 className="text-lg font-bold mb-4">Your Deck</h2>
+          <h2 className="text-lg font-bold mb-6 flex items-center justify-between">
+            Your Deck
+            <button
+              onClick={handlePredict}
+              className="ml-4 px-4 py-2 bg-primary text-white rounded hover:bg-blue-700"
+            >
+              Predict
+            </button>
+            {error && <p className="text-red-500">{error}</p>}
+            {prediction && (
+              <p className="text-green-600 text-xl font-bold">
+                Prediction: {prediction}%
+              </p>
+            )}
+          </h2>
           <DeckViewer deck={deck} onCardClick={handleCardClick} />
         </section>
       </main>
