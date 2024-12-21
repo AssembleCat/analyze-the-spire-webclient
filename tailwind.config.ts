@@ -6,6 +6,7 @@ const characterColors = [
   "defect",
   "watcher",
   "colorless",
+  "curse",
 ];
 
 export default {
@@ -24,6 +25,7 @@ export default {
         defect: "#33A8FF",
         watcher: "#9B59B6",
         colorless: "#828282",
+        curse: "#000000",
 
         primary: "#3F3F46",
       },
