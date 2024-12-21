@@ -4,7 +4,14 @@ import { useState } from "react";
 import CardSelector from "@/components/CardSelector";
 import DeckViewer from "@/components/DeckViewer";
 
-const characters = ["IRONCLAD", "SILENT", "DEFECT", "WATCHER", "COLORLESS"];
+const characters = [
+  "IRONCLAD",
+  "SILENT",
+  "DEFECT",
+  "WATCHER",
+  "COLORLESS",
+  "CURSE",
+];
 
 type DeckCard = {
   id: string;

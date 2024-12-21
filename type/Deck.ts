@@ -788,6 +788,12 @@ const DECK: Deck = {
       ),
     ],
   },
+  CURSE: {
+    attack: [],
+    skill: [...BASE_CURSE_CARD],
+    power: [],
+  },
 };
 
 export { DECK, BASE_STATUS_CARD, BASE_CURSE_CARD, BASIC_CARD };
+export type { Rarity, CardType };

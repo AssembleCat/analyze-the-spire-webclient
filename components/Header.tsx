@@ -11,7 +11,7 @@ const navigation = {
 export default function Header() {
   const router = useRouter();
   return (
-    <header className="bg-gray-800 text-white py-6 px-6 flex justify-between items-center">
+    <header className="bg-primary text-white py-6 px-6 flex justify-between items-center">
       <h1 className="ml-10 text-4xl font-bold">Analyze the Spire</h1>
       <nav>
         <ul className="mr-10 flex space-x-4">
