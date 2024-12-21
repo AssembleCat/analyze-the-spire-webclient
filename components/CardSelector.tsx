@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { DECK } from "../type/Deck"; // Deck.ts에서 DECK을 임포트
+import { DECK, CardType, Rarity } from "../type/Deck";
 
 interface CardSelectorProps {
   character: string;
   onCardSelect: (card: string) => void;
 }
 
-const rarityOrder: Record<string, number> = {
+const rarityOrder: Record<Rarity, number> = {
   Common: 2,
   Uncommon: 3,
   Rare: 4,
   Special: 5,
 };
 
-const typeOrder: Record<string, number> = {
+const typeOrder: Record<CardType, number> = {
   Attack: 1,
   Skill: 2,
   Power: 3,
@@ -25,20 +25,29 @@ export default function CardSelector({
 }: CardSelectorProps) {
   const deck = DECK[character] || { attack: [], skill: [], power: [] };
 
-  // 카드 필터링 기준 설정
-  const [selectedRarity, setSelectedRarity] = useState<
-    "Common" | "Uncommon" | "Rare" | "Special" | "All"
-  >("All");
-  const [selectedType, setSelectedType] = useState<
-    "Attack" | "Skill" | "Power" | "All"
-  >("All");
+  // 필터링 기준을 배열 형태로 설정
+  const [selectedRarities, setSelectedRarities] = useState<Rarity[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<CardType[]>([]);
 
-  // 선택한 기준에 맞는 카드만 필터링
+  const toggleSelection = <T,>(
+    value: T,
+    selectedValues: T[],
+    setSelectedValues: React.Dispatch<React.SetStateAction<T[]>>
+  ) => {
+    if (selectedValues.includes(value)) {
+      setSelectedValues(selectedValues.filter((v) => v !== value));
+    } else {
+      setSelectedValues([...selectedValues, value]);
+    }
+  };
+
+  // 필터링된 카드 목록
   const filteredCards = [...deck.attack, ...deck.skill, ...deck.power].filter(
     (card) => {
       const matchesRarity =
-        selectedRarity === "All" || card.rarity === selectedRarity;
-      const matchesType = selectedType === "All" || card.type === selectedType;
+        selectedRarities.length === 0 || selectedRarities.includes(card.rarity);
+      const matchesType =
+        selectedTypes.length === 0 || selectedTypes.includes(card.type);
       return matchesRarity && matchesType;
     }
   );
@@ -55,47 +64,43 @@ export default function CardSelector({
     <div>
       <h3 className="text-md font-bold mb-2">{character} Cards</h3>
 
-      {/* 필터링 및 정렬 기준 선택 */}
-      <div className="mb-4">
-        <div className="flex space-x-4">
-          {/* 카드 타입 필터 */}
-          <select
-            value={selectedType}
-            onChange={(e) =>
-              setSelectedType(
-                e.target.value as "Attack" | "Skill" | "Power" | "All"
-              )
+      {/* 필터링 버튼 */}
+      <div className="grid grid-cols-7 gap-4 mb-4 mx-2">
+        {/* 카드 타입 버튼 */}
+        {(["Attack", "Skill", "Power"] as CardType[]).map((type) => (
+          <button
+            key={type}
+            className={`w-full px-4 py-2 border rounded ${
+              selectedTypes.includes(type)
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200"
+            }`}
+            onClick={() =>
+              toggleSelection(type, selectedTypes, setSelectedTypes)
             }
-            className="p-2 border rounded"
           >
-            <option value="All">All Types</option>
-            <option value="Attack">Attack</option>
-            <option value="Skill">Skill</option>
-            <option value="Power">Power</option>
-          </select>
+            {type}
+          </button>
+        ))}
 
-          {/* 레어도 필터 */}
-          <select
-            value={selectedRarity}
-            onChange={(e) =>
-              setSelectedRarity(
-                e.target.value as
-                  | "Common"
-                  | "Uncommon"
-                  | "Rare"
-                  | "Special"
-                  | "All"
-              )
-            }
-            className="p-2 border rounded"
-          >
-            <option value="All">All Rarities</option>
-            <option value="Common">Common</option>
-            <option value="Uncommon">Uncommon</option>
-            <option value="Rare">Rare</option>
-            <option value="Special">Special</option>
-          </select>
-        </div>
+        {/* 레어도 버튼 */}
+        {(["Common", "Uncommon", "Rare", "Special"] as Rarity[]).map(
+          (rarity) => (
+            <button
+              key={rarity}
+              className={`w-full px-4 py-2 border rounded ${
+                selectedRarities.includes(rarity)
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200"
+              }`}
+              onClick={() =>
+                toggleSelection(rarity, selectedRarities, setSelectedRarities)
+              }
+            >
+              {rarity}
+            </button>
+          )
+        )}
       </div>
 
       {/* 카드 목록 */}
