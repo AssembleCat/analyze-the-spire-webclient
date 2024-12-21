@@ -12,11 +12,15 @@ export default function DeckViewer({
   deck: DeckCard[];
   onCardClick: (cardName: string, isUpgraded: boolean) => void;
 }) {
+  const totalCards = deck.reduce((total, card) => total + card.count, 0);
   return (
     <div>
-      <h3 className="text-md font-bold mb-2">
-        {deck.length > 0 ? "Click to upgrade and purge" : "Select your deck!"}
-      </h3>
+      <div className="flex justify-between">
+        <h3 className="text-md mb-2">
+          {deck.length > 0 ? "Click to upgrade and purge" : "Select your deck!"}
+        </h3>
+        <h3>{totalCards > 0 ? `${totalCards} Cards` : ""}</h3>
+      </div>
       <ul className="grid grid-cols-2 gap-2">
         {deck.map((card) => (
           <li key={card.id}>
