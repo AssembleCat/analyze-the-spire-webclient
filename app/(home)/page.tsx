@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import CardSelector from "@/components/CardSelector";
-import DeckViewer from "@/components/DeckViewer";
+import { useEffect, useState } from "react";
 import { DECK, BASIC_CARD } from "@/type/Deck";
+import DeckAndRelicViewer from "@/components/viewer/DeckAndRelicViewer";
+import CardAndRelicSelector from "@/components/selector/CardAndRelicSelector";
 
 const characters = [
   "IRONCLAD",
@@ -21,13 +21,22 @@ type DeckCard = {
   isUpgraded: boolean;
 };
 
+type Relics = {
+  name: string;
+};
+
 export default function Home() {
   const [selectedCharacter, setSelectedCharacter] = useState<string>(
     characters[0]
   );
   const [deck, setDeck] = useState<DeckCard[]>([]);
+  const [relic, setRelic] = useState<Relics[]>([]);
   const [prediction, setPrediction] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    handleCardtypeSelected(selectedCharacter);
+  }, [selectedCharacter]);
 
   const handleCardtypeSelected = (character: string) => {
     // 선택된 카드타입이 캐릭터타입일 경우 해당 캐릭터의 기본카드를 선택택
@@ -167,6 +176,18 @@ export default function Home() {
     }
   };
 
+  const handleRelicAdd = (relicName: string) => {
+    const existingRelic = relic.find((relic) => relic.name === relicName);
+
+    if (existingRelic) return;
+
+    setRelic([...relic, { name: relicName }]);
+  };
+
+  const handleRelicClick = (relicName: string) => {
+    setRelic([...relic.filter((relic) => relic.name !== relicName)]);
+  };
+
   const handlePredict = async () => {
     setError(null);
     setPrediction(null);
@@ -197,43 +218,55 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <main className="flex">
-        <CharacterSelector
-          characters={characters}
-          selectedCharacter={selectedCharacter}
-          onSelect={handleCardtypeSelected}
-          onCardAdd={handleCardAdd}
-        />
-        <DeckSection
-          deck={deck}
-          prediction={prediction}
-          error={error}
-          onCardClick={handleCardClick}
-          onPredict={handlePredict}
-        />
+      <main className="flex flex-col h-full">
+        <div className="flex p-4">
+          <div className="w-2/3">
+            <SelectorSection
+              characters={characters}
+              selectedCharacter={selectedCharacter}
+              onSelect={handleCardtypeSelected}
+              onCardAdd={handleCardAdd}
+              onRelicAdd={handleRelicAdd}
+            />
+          </div>
+          <div className="w-1/3">
+            <DeckSection
+              deck={deck}
+              relics={relic}
+              prediction={prediction}
+              error={error}
+              onCardClick={handleCardClick}
+              onRelicClick={handleRelicClick}
+              onPredict={handlePredict}
+            />
+          </div>
+        </div>
       </main>
     </div>
   );
 }
 
-const CharacterSelector = ({
+const SelectorSection = ({
   characters,
   selectedCharacter,
   onSelect,
   onCardAdd,
+  onRelicAdd,
 }: {
   characters: string[];
   selectedCharacter: string;
   onSelect: (character: string) => void;
   onCardAdd: (cardName: string) => void;
+  onRelicAdd: (relicName: string) => void;
 }) => (
-  <section className="w-1/2 p-6">
-    <h2 className="text-lg font-bold mb-4">Select Cardtype</h2>
-    <ul className="flex space-x-4 mb-6">
-      {characters.map((character) => (
-        <li key={character}>
+  <section className="p-6">
+    <div className="bg-white p-4 rounded shadow mb-6">
+      <h2 className="text-lg font-bold mb-4">Select Cardtype</h2>
+      <div className="grid grid-cols-6 gap-4 mb-4 mx-2">
+        {characters.map((character) => (
           <button
-            className={`px-4 py-2 rounded ${
+            key={character}
+            className={`w-full px-4 py-2 border rounded ${
               selectedCharacter === character
                 ? "bg-gray-300 text-black"
                 : `bg-${character.toLowerCase()} text-white`
@@ -242,42 +275,56 @@ const CharacterSelector = ({
           >
             {character}
           </button>
-        </li>
-      ))}
-    </ul>
-    <CardSelector character={selectedCharacter} onCardSelect={onCardAdd} />
+        ))}
+      </div>
+    </div>
+
+    <CardAndRelicSelector
+      character={selectedCharacter}
+      onCardSelect={onCardAdd}
+      onRelicSelect={onRelicAdd}
+    />
   </section>
 );
 
 const DeckSection = ({
   deck,
+  relics,
   prediction,
   error,
   onCardClick,
+  onRelicClick,
   onPredict,
 }: {
   deck: DeckCard[];
+  relics: Relics[];
   prediction: string | null;
   error: string | null;
   onCardClick: (cardName: string, isUpgraded: boolean) => void;
+  onRelicClick: (relicName: string) => void;
   onPredict: () => void;
 }) => (
-  <section className="w-1/2 p-6">
+  <section className="p-6">
     <h2 className="text-lg font-bold mb-6 flex items-center justify-between">
       Your Deck
-      <button
-        onClick={onPredict}
-        className="ml-4 px-4 py-2 bg-primary text-white rounded hover:bg-blue-700"
-      >
-        Predict
-      </button>
       {error && <p className="text-red-500">{error}</p>}
       {prediction && (
         <p className="text-green-600 text-xl font-bold">
           Prediction: {prediction}%
         </p>
       )}
+      <button
+        onClick={onPredict}
+        className="ml-4 px-4 py-2 bg-primary text-white rounded hover:bg-blue-700"
+      >
+        Predict
+      </button>
     </h2>
-    <DeckViewer deck={deck} onCardClick={onCardClick} />
+    <DeckAndRelicViewer
+      deck={deck}
+      relics={relics}
+      onCardClick={onCardClick}
+      onRelicClick={onRelicClick}
+    ></DeckAndRelicViewer>
   </section>
 );
