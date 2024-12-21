@@ -62,49 +62,54 @@ export default function CardSelector({
 
   return (
     <div>
-      <h3 className="text-md font-bold mb-2">{character} Cards</h3>
+      <div className="h-[8vh]">
+        <h3 className="text-md font-bold mb-2">{character} Cards</h3>
 
-      {/* 필터링 버튼 */}
-      <div className="grid grid-cols-7 gap-4 mb-4 mx-2">
-        {/* 카드 타입 버튼 */}
-        {(["Attack", "Skill", "Power"] as CardType[]).map((type) => (
-          <button
-            key={type}
-            className={`w-full px-4 py-2 border rounded ${
-              selectedTypes.includes(type)
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200"
-            }`}
-            onClick={() =>
-              toggleSelection(type, selectedTypes, setSelectedTypes)
-            }
-          >
-            {type}
-          </button>
-        ))}
-
-        {/* 레어도 버튼 */}
-        {(["Common", "Uncommon", "Rare", "Special"] as Rarity[]).map(
-          (rarity) => (
+        {/* 필터링 버튼 */}
+        <div className="grid grid-cols-7 gap-4 mb-4 mx-2">
+          {/* 카드 타입 버튼 */}
+          {(["Attack", "Skill", "Power"] as CardType[]).map((type) => (
             <button
-              key={rarity}
+              key={type}
               className={`w-full px-4 py-2 border rounded ${
-                selectedRarities.includes(rarity)
+                selectedTypes.includes(type)
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200"
               }`}
               onClick={() =>
-                toggleSelection(rarity, selectedRarities, setSelectedRarities)
+                toggleSelection(type, selectedTypes, setSelectedTypes)
               }
             >
-              {rarity}
+              {type}
             </button>
-          )
-        )}
+          ))}
+
+          {/* 레어도 버튼 */}
+          {(["Common", "Uncommon", "Rare", "Special"] as Rarity[]).map(
+            (rarity) => (
+              <button
+                key={rarity}
+                className={`w-full px-4 py-2 border rounded ${
+                  selectedRarities.includes(rarity)
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                }`}
+                onClick={() =>
+                  toggleSelection(rarity, selectedRarities, setSelectedRarities)
+                }
+              >
+                {rarity}
+              </button>
+            )
+          )}
+        </div>
       </div>
 
       {/* 카드 목록 */}
-      <ul className="grid grid-cols-5 gap-2 max-h-[calc(100vh-220px)] overflow-y-auto scrollbar-custom p-2">
+      <ul
+        className=" grid grid-cols-6 gap-2 h-[40vh] overflow-y-scroll scrollbar-custom p-2"
+        style={{ gridAutoRows: "50px" }}
+      >
         {sortedCards.map((card) => (
           <li key={card.name}>
             <button
