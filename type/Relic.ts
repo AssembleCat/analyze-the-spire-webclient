@@ -1,4 +1,4 @@
-type Rarity =
+type RelicRarity =
   | "Starter"
   | "Common"
   | "Uncommon"
@@ -13,7 +13,7 @@ type Rarity =
 
 interface Relic {
   name: string;
-  types: Rarity[];
+  types: RelicRarity[];
 }
 
 const ALL_RELICS: Relic[] = [
@@ -199,3 +199,4 @@ const ALL_RELICS: Relic[] = [
 ];
 
 export { ALL_RELICS };
+export type { RelicRarity };

@@ -559,6 +559,7 @@ const COLORLESS_POWER_SPECIAL = ["Omega"];
 
 const BASIC_CARD = {
   IRONCLAD: [
+    "AscendersBane",
     "Strike_R",
     "Strike_R",
     "Strike_R",
@@ -571,6 +572,7 @@ const BASIC_CARD = {
     "Bash",
   ],
   SILENT: [
+    "AscendersBane",
     "Strike_G",
     "Strike_G",
     "Strike_G",
@@ -585,6 +587,7 @@ const BASIC_CARD = {
     "Neutralize",
   ],
   DEFECT: [
+    "AscendersBane",
     "Strike_B",
     "Strike_B",
     "Strike_B",
@@ -597,6 +600,7 @@ const BASIC_CARD = {
     "Zap",
   ],
   WATCHER: [
+    "AscendersBane",
     "Strike_P",
     "Strike_P",
     "Strike_P",
