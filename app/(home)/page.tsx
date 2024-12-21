@@ -3,7 +3,7 @@
 import { useState } from "react";
 import CardSelector from "@/components/CardSelector";
 import DeckViewer from "@/components/DeckViewer";
-import { DECK } from "@/type/Deck";
+import { DECK, BASIC_CARD } from "@/type/Deck";
 
 const characters = [
   "IRONCLAD",
@@ -28,6 +28,39 @@ export default function Home() {
   const [deck, setDeck] = useState<DeckCard[]>([]);
   const [prediction, setPrediction] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const handleCardtypeSelected = (character: string) => {
+    // 선택된 카드타입이 캐릭터타입일 경우 해당 캐릭터의 기본카드를 선택택
+    if (character in BASIC_CARD) {
+      // 캐릭터의 기본카드를 확보
+      const cardNames = BASIC_CARD[character as keyof typeof BASIC_CARD];
+
+      // DeckCard 타입에 맞춰 생성
+      const deckCards: DeckCard[] = cardNames.reduce(
+        (acc: DeckCard[], cardName: string) => {
+          const existingCard = acc.find((card) => card.name === cardName);
+
+          if (existingCard) {
+            existingCard.count += 1;
+          } else {
+            acc.push({
+              id: `${cardName}-${Date.now()}`,
+              name: cardName,
+              count: 1,
+              isUpgraded: false,
+            });
+          }
+
+          return acc;
+        },
+        []
+      );
+
+      setDeck(deckCards);
+    }
+
+    setSelectedCharacter(character);
+  };
 
   // 카드 추가 함수 (미강화 카드일 때)
   const handleCardAdd = (cardName: string) => {
@@ -168,7 +201,7 @@ export default function Home() {
         <CharacterSelector
           characters={characters}
           selectedCharacter={selectedCharacter}
-          onSelect={setSelectedCharacter}
+          onSelect={handleCardtypeSelected}
           onCardAdd={handleCardAdd}
         />
         <DeckSection
@@ -195,7 +228,7 @@ const CharacterSelector = ({
   onCardAdd: (cardName: string) => void;
 }) => (
   <section className="w-1/2 p-6">
-    <h2 className="text-lg font-bold mb-4">Select Character</h2>
+    <h2 className="text-lg font-bold mb-4">Select Cardtype</h2>
     <ul className="flex space-x-4 mb-6">
       {characters.map((character) => (
         <li key={character}>

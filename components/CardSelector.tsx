@@ -7,10 +7,10 @@ interface CardSelectorProps {
 }
 
 const rarityOrder: Record<Rarity, number> = {
-  Common: 2,
-  Uncommon: 3,
-  Rare: 4,
-  Special: 5,
+  Common: 1,
+  Uncommon: 2,
+  Rare: 3,
+  Special: 4,
 };
 
 const typeOrder: Record<CardType, number> = {
@@ -104,7 +104,7 @@ export default function CardSelector({
       </div>
 
       {/* 카드 목록 */}
-      <ul className="grid grid-cols-2 gap-2 max-h-[calc(100vh-220px)] overflow-y-auto scrollbar-custom p-2">
+      <ul className="grid grid-cols-5 gap-2 max-h-[calc(100vh-220px)] overflow-y-auto scrollbar-custom p-2">
         {sortedCards.map((card) => (
           <li key={card.name}>
             <button
