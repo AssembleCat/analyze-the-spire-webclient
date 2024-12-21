@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { DECK, BASIC_CARD } from "@/type/Deck";
 import DeckAndRelicViewer from "@/components/viewer/DeckAndRelicViewer";
 import CardAndRelicSelector from "@/components/selector/CardAndRelicSelector";
+import { BASIC_RELIC } from "@/type/Relic";
 
 const characters = [
   "IRONCLAD",
@@ -39,7 +40,7 @@ export default function Home() {
   }, [selectedCharacter]);
 
   const handleCardtypeSelected = (character: string) => {
-    // 선택된 카드타입이 캐릭터타입일 경우 해당 캐릭터의 기본카드를 선택택
+    // 선택된 카드타입이 캐릭터타입일 경우 해당 캐릭터의 기본카드를 선택
     if (character in BASIC_CARD) {
       // 캐릭터의 기본카드를 확보
       const cardNames = BASIC_CARD[character as keyof typeof BASIC_CARD];
@@ -66,6 +67,15 @@ export default function Home() {
       );
 
       setDeck(deckCards);
+    }
+
+    // 선택된 캐릭터의 기본 유물을 설정
+    if (character in BASIC_RELIC) {
+      // 캐릭터의 기본 유물을 Relics 타입 배열로 변환
+      const relicName = BASIC_RELIC[character as keyof typeof BASIC_RELIC];
+      const basicRelic: Relics[] = [{ name: relicName }];
+
+      setRelic(basicRelic);
     }
 
     setSelectedCharacter(character);
