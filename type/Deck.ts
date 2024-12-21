@@ -557,6 +557,59 @@ const COLORLESS_POWER_RARE = [
 // 스페셜 파워 1장
 const COLORLESS_POWER_SPECIAL = ["Omega"];
 
+const BASIC_CARD = {
+  IRONCLAD: [
+    "Strike_R",
+    "Strike_R",
+    "Strike_R",
+    "Strike_R",
+    "Strike_R",
+    "Defend_R",
+    "Defend_R",
+    "Defend_R",
+    "Defend_R",
+    "Bash",
+  ],
+  SILENT: [
+    "Strike_G",
+    "Strike_G",
+    "Strike_G",
+    "Strike_G",
+    "Strike_G",
+    "Defend_G",
+    "Defend_G",
+    "Defend_G",
+    "Defend_G",
+    "Defend_G",
+    "Survivor",
+    "Neutralize",
+  ],
+  DEFECT: [
+    "Strike_B",
+    "Strike_B",
+    "Strike_B",
+    "Strike_B",
+    "Defend_B",
+    "Defend_B",
+    "Defend_B",
+    "Defend_B",
+    "Dualcast",
+    "Zap",
+  ],
+  WATCHER: [
+    "Strike_P",
+    "Strike_P",
+    "Strike_P",
+    "Strike_P",
+    "Defend_P",
+    "Defend_P",
+    "Defend_P",
+    "Defend_P",
+    "Eruption",
+    "Vigilance",
+  ],
+};
+
 interface Deck {
   [key: string]: {
     attack: Card[];
@@ -737,4 +790,4 @@ const DECK: Deck = {
   },
 };
 
-export { DECK, BASE_STATUS_CARD, BASE_CURSE_CARD };
+export { DECK, BASE_STATUS_CARD, BASE_CURSE_CARD, BASIC_CARD };
