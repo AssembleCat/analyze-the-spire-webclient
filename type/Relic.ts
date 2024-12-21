@@ -16,6 +16,13 @@ interface Relic {
   types: RelicRarity[];
 }
 
+const BASIC_RELIC = {
+  IRONCLAD: "Burning Blood",
+  SILENT: "Ring of Snake",
+  DEFECT: "Cracked Core",
+  WATCHER: "HolyWater",
+};
+
 const ALL_RELICS: Relic[] = [
   { name: "Akabeko", types: ["Common"] },
   { name: "Anchor", types: ["Common"] },
@@ -198,5 +205,5 @@ const ALL_RELICS: Relic[] = [
   { name: "Yang", types: ["Uncommon"] },
 ];
 
-export { ALL_RELICS };
+export { ALL_RELICS, BASIC_RELIC };
 export type { RelicRarity };
