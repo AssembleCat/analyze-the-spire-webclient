@@ -16,7 +16,7 @@ export default function RelicViewer({
         <h3 className="text-md mb-2">
           {relics.length > 0 ? "Click to purge" : "Select your relic!"}
         </h3>
-        <h3>{totalRelics > 0 ? `${totalRelics} Cards` : ""}</h3>
+        <h3>{totalRelics > 0 ? `${totalRelics} Relics` : ""}</h3>
       </div>
       <ul className="grid grid-cols-2 gap-2">
         {relics.map((relic) => (
