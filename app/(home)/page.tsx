@@ -3,6 +3,7 @@
 import { useState } from "react";
 import CardSelector from "@/components/CardSelector";
 import DeckViewer from "@/components/DeckViewer";
+import { DECK } from "@/type/Deck";
 
 const characters = [
   "IRONCLAD",
@@ -59,6 +60,13 @@ export default function Home() {
 
   // 카드 클릭 시 동작 (강화 카드 또는 미강화 카드 변경)
   const handleCardClick = (cardName: string, isUpgraded: boolean) => {
+    // 저주카드는 클릭할 경우 무조건 제거
+    const curseCard = [...DECK["CURSE"].skill];
+    if (curseCard.some((card) => card.name === cardName)) {
+      setDeck(deck.filter((card) => card.name !== cardName));
+      return;
+    }
+
     if (!isUpgraded) {
       // 미강화 카드를 클릭했을 때
       const existingCard = deck.find(
