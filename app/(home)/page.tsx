@@ -205,12 +205,23 @@ export default function Home() {
     const transformedDeck = deck.flatMap((card) =>
       Array(card.count).fill(card.name + (card.isUpgraded ? "+1" : ""))
     );
+    const transfomedRelic = relic.flatMap((relic) => relic.name);
 
     try {
       const response = await fetch("/api/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deck: transformedDeck }),
+        body: JSON.stringify({
+          battle: {
+            character: selectedCharacter,
+            deck: transformedDeck,
+            relics: transfomedRelic,
+            enemy: "",
+            potion_used: false,
+            ascension: 20,
+            floor: 10,
+          },
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to fetch prediction.");
@@ -222,7 +233,7 @@ export default function Home() {
         throw new Error("Invalid response format.");
       }
     } catch {
-      setError("Try again later");
+      setError("Sorry Try again later");
     }
   };
 
