@@ -96,3 +96,4 @@ const ALL_ENEMY: Enemy[] = [
 ];
 
 export { ALL_ENEMY };
+export type { Act, Enemy };

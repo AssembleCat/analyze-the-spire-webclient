@@ -5,6 +5,7 @@ import { DECK, BASIC_CARD } from "@/type/Deck";
 import DeckAndRelicViewer from "@/components/viewer/DeckAndRelicViewer";
 import CardAndRelicSelector from "@/components/selector/CardAndRelicSelector";
 import { BASIC_RELIC } from "@/type/Relic";
+import { ALL_ENEMY, Enemy } from "@/type/Enemy";
 
 const characters = [
   "IRONCLAD",
@@ -32,6 +33,7 @@ export default function Home() {
   );
   const [deck, setDeck] = useState<DeckCard[]>([]);
   const [relic, setRelic] = useState<Relics[]>([]);
+  const [enemy, setEnemy] = useState<Enemy>({ name: "2 Louse", stage: [] });
   const [prediction, setPrediction] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -198,6 +200,20 @@ export default function Home() {
     setRelic([...relic.filter((relic) => relic.name !== relicName)]);
   };
 
+  const handleEnemyAdd = (enemyName: string) => {
+    if (enemy?.name === enemyName || enemyName === undefined) return;
+
+    const newEnemy = ALL_ENEMY.find((enemy) => enemyName === enemy.name);
+
+    if (newEnemy === undefined) return;
+
+    setEnemy(newEnemy);
+  };
+
+  const handleEnemyClick = () => {
+    setEnemy({ name: "", stage: [] } as Enemy);
+  };
+
   const handlePredict = async () => {
     setError(null);
     setPrediction(null);
@@ -248,16 +264,19 @@ export default function Home() {
               onSelect={handleCardtypeSelected}
               onCardAdd={handleCardAdd}
               onRelicAdd={handleRelicAdd}
+              onEnemyAdd={handleEnemyAdd}
             />
           </div>
           <div className="w-1/3">
             <DeckSection
               deck={deck}
               relics={relic}
+              enemy={enemy}
               prediction={prediction}
               error={error}
               onCardClick={handleCardClick}
               onRelicClick={handleRelicClick}
+              onEnemyClick={handleEnemyClick}
               onPredict={handlePredict}
             />
           </div>
@@ -273,12 +292,14 @@ const SelectorSection = ({
   onSelect,
   onCardAdd,
   onRelicAdd,
+  onEnemyAdd,
 }: {
   characters: string[];
   selectedCharacter: string;
   onSelect: (character: string) => void;
   onCardAdd: (cardName: string) => void;
   onRelicAdd: (relicName: string) => void;
+  onEnemyAdd: (enemyName: string) => void;
 }) => (
   <section className="p-6">
     <div className="bg-white p-4 rounded shadow mb-6">
@@ -304,6 +325,7 @@ const SelectorSection = ({
       character={selectedCharacter}
       onCardSelect={onCardAdd}
       onRelicSelect={onRelicAdd}
+      onEnemySelect={onEnemyAdd}
     />
   </section>
 );
@@ -311,18 +333,22 @@ const SelectorSection = ({
 const DeckSection = ({
   deck,
   relics,
+  enemy,
   prediction,
   error,
   onCardClick,
   onRelicClick,
+  onEnemyClick,
   onPredict,
 }: {
   deck: DeckCard[];
   relics: Relics[];
+  enemy: Enemy;
   prediction: string | null;
   error: string | null;
   onCardClick: (cardName: string, isUpgraded: boolean) => void;
   onRelicClick: (relicName: string) => void;
+  onEnemyClick: () => void;
   onPredict: () => void;
 }) => (
   <section className="p-6">
@@ -344,8 +370,10 @@ const DeckSection = ({
     <DeckAndRelicViewer
       deck={deck}
       relics={relics}
+      enemy={enemy}
       onCardClick={onCardClick}
       onRelicClick={onRelicClick}
+      onEnemyClick={onEnemyClick}
     ></DeckAndRelicViewer>
   </section>
 );
