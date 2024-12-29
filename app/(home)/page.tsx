@@ -367,6 +367,10 @@ const DeckSection = ({
         Predict
       </button>
     </h2>
+    <div>
+      <button>Ascension</button>
+      <button>Floor</button>
+    </div>
     <DeckAndRelicViewer
       deck={deck}
       relics={relics}
