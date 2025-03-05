@@ -1,14 +1,12 @@
 # Analyze The Spire Webclient
 
-Slay the Spire 게임의 데이터를 분석하고 시각화하는 웹 애플리케이션입니다.
+Slay the Spire 게임의 플레이 데이터를 분석하고 예상되는 데미지를 시각화하는 웹 애플리케이션입니다.
 
 ## 기술 스택
 
-- **Frontend Framework**: Next.js 15.0.4
-- **UI Library**: React 19.0.0
-- **Styling**: TailwindCSS 3.4.1
-- **Language**: TypeScript 5
-- **Development Tools**: ESLint, PostCSS
+- **Frontend Framework**: Next.js
+- **Styling**: TailwindCSS
+- **Language**: TypeScript
 
 ## 주요 기능
 
